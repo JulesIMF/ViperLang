@@ -14,6 +14,7 @@ find_package(LLVM REQUIRED CONFIG)
 target_include_directories(compiler PRIVATE ${LLVM_INCLUDE_DIRS})
 target_link_libraries(compiler PRIVATE ${llvm_libs})
 add_definitions(${LLVM_DEFINITIONS})
+add_compile_options(-Wall -Wextra -g)
 
 llvm_map_components_to_libnames(llvm_libs support core irreader)
 

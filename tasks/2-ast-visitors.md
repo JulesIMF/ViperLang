@@ -91,9 +91,9 @@ fun main argc argv = {
 class FunDeclStatement : public Declaration {
   // Constructors, Accept, GetLocation, GetName, etc...
   
-  lex::Token name_; // Conveniently also stores location
+  Lex::Token name_; // Conveniently also stores location
   
-  std::vector<lex::Token> formals_;
+  std::vector<Lex::Token> formals_;
 
   Expression* body_;
 };

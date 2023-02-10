@@ -8,57 +8,67 @@
 #include <optional>
 #include <string>
 
-namespace lex {
+namespace Lex
+{
 
-class Lexer {
- public:
-  Lexer(std::istream& source);
+class Lexer
+{
+public:
+    Lexer(std::istream& source);
 
-  Token GetNextToken();
+    Token
+    GetNextToken();
 
-  void Advance();
+    void
+    Advance();
 
-  Token Peek();
+    Token
+    Peek();
 
-  Token GetPreviousToken();
+    Token
+    GetPreviousToken();
 
-  // Check current token type and maybe consume it.
-  bool Matches(lex::TokenType type);
+    // Check current token type and maybe consume it.
+    bool
+    Matches(Lex::TokenType type);
 
- private:
-  void SkipWhitespace();
+private:
+    void
+    SkipWhiteSpace();
 
-  void SkipComments();
+    void
+    SkipComments();
 
-  ////////////////////////////////////////////////////////////////////
+    std::optional<Token>
+    MatchDelimiters();
 
-  std::optional<Token> MatchOperators();
+    std::optional<Token>
+    MatchOperatorsAsgn();
 
-  std::optional<TokenType> MatchOperator();
+    std::optional<Token>
+    MatchLiterals();
 
-  ////////////////////////////////////////////////////////////////////
+    std::optional<Token>
+    MatchNumericLiteral();
 
-  std::optional<Token> MatchLiterls();
+    std::optional<Token>
+    MatchStringLiteral();
 
-  std::optional<Token> MatchNumericLiteral();
+    std::optional<Token>
+    MatchCharLiteral();
 
-  std::optional<Token> MatchStringLiteral();
+    std::optional<Token>
+    MatchWords();
 
-  std::optional<Token> MatchCharLiteral();
+private:
+    // For easy access to locations
+    Token prev_{};
 
-  std::optional<Token> MatchWords();
+    // Current token
+    Token curr_{};
 
-  ////////////////////////////////////////////////////////////////////
-
- private:
-  // For easy access to locations
-  Token prev_{};
-
-  // Current token
-  Token peek_{};
-
-  Scanner scanner_;
-  IdentTable table_;
+    Scanner scanner_;
+    IdentTable table_;
 };
 
-}  // namespace lex
+}  // namespace Lex

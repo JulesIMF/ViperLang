@@ -5,16 +5,22 @@
 #include <cstddef>
 #include <string>
 
-namespace lex {
+namespace Lex
+{
 
-struct Location {
-  size_t lineno = 0;
-  size_t columnno = 0;
+struct Location
+{
+    size_t ptr = 0;
+    size_t line = 0;
+    size_t column = 0;
 
-  std::string Format() const {
-    return fmt::format("line = {}, column = {}",  //
-                       lineno + 1, columnno + 1);
-  }
+    std::string
+    Format() const
+    {
+        return fmt::format(
+            "line = {}, column = {}", //
+            line + 1, column + 1);
+    }
 };
 
-}  // namespace lex
+} // namespace Lex

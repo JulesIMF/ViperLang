@@ -1,10 +1,49 @@
-BasedOnStyle: Google
----
-Language: Cpp
-AllowShortFunctionsOnASingleLine: None
-AllowShortIfStatementsOnASingleLine: false
-AllowShortLambdasOnASingleLine: Empty
-DerivePointerAlignment: false
-PointerAlignment: Left
-SortIncludes: false
+# Inspired by Windows NT style
+# Origin: https://github.com/reactos/reactos/blob/master/.clang-format
+# Copyright ReactOS team
 
+BasedOnStyle: Microsoft
+
+IndentWidth:     4
+UseTab:          Never
+
+IndentCaseLabels: true
+
+AllowAllArgumentsOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: false
+
+BinPackParameters: false
+BinPackArguments: true
+
+# This applies to () [] <>
+AlignAfterOpenBracket: AlwaysBreak
+
+# Always break before braces
+BreakBeforeBraces: Allman
+
+# return type on it's own line
+AlwaysBreakAfterReturnType: All
+
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeParens: ControlStatements
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceInEmptyParentheses: false
+SpacesBeforeTrailingComments: 2
+SpacesInAngles:  false
+SpacesInContainerLiterals: true
+SpacesInCStyleCastParentheses: false
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+
+# My additions
+FixNamespaceComments: true
+IncludeBlocks: Preserve
+IndentAccessModifiers: false
+AccessModifierOffset: -4
+PointerAlignment: Left
+PackConstructorInitializers: Never
+BreakConstructorInitializers: AfterColon
+QualifierAlignment: Right
+BreakBeforeBinaryOperators: None
+AlignAfterOpenBracket: Align
+ColumnLimit: 70

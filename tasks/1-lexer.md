@@ -29,7 +29,7 @@
    -  позицию токена в тексте, 
    -  семантическую информацю о токене,
    -  его тип
-4. Реализуйте `IdentTable` — отображение `string_view → TokenType`
+4. Реализуйте `IdentTable` — отображение `string → TokenType`
 5. Реализуйте `Scanner`
    - **Считывание данных** в буффер
    - **Отслеживание позиции** в тексте
@@ -60,7 +60,7 @@ cd build && make -j8
 позиции в тексте от непосредственной работы с символами. Для простоты вам
 предлагается считывать файл в буффер целиком.
 
-Для ссылки на позиции в тексте используйте `std::string_view`
+Для ссылки на позиции в тексте используйте `std::string`
 
 Для поддержания семантической информации о токене используйте `std::variant`
 или C—style `union`
@@ -104,7 +104,7 @@ cd build && make -j8
 
 Изучите чужие реализации: 
 
-- [Hare](https://git.sr.ht/~sircmpwn/harec/tree/master/item/src/lex.c)
+- [Hare](https://git.sr.ht/~sircmpwn/harec/tree/master/item/src/Lex.c)
 - Язык Go
   - [Token](https://go.dev/src/go/token/token.go)
   - [Scanner](https://go.dev/src/go/scanner/scanner.go)
