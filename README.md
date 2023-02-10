@@ -1,4 +1,7 @@
+
 # Compilers course: building compilers is fun and easy
+
+_Author of the course is https://github.com/otakubeam_
 
 This is the repo containing tasks for the compilers course at MIPT.
 
