@@ -18,6 +18,7 @@ find_package(Catch2 2 REQUIRED)
 
 # --------------------------------------------------------------------
 
+include_directories(includes)
 add_subdirectory(src)
 
 add_subdirectory(app)
