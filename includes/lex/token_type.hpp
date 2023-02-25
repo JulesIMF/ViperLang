@@ -47,6 +47,7 @@ enum class TokenType
     DOT,        // .
     SEMICOLON,  // ;
     COLON,      // :
+    RARROW,     // ->
 
     //
     // Operators

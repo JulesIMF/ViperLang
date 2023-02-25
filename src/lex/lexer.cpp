@@ -22,6 +22,9 @@ Lexer::Lexer(std::istream& source) :
 Token
 Lexer::GetNextToken()
 {
+    if (scanner_.Eof())
+        return Token(TokenType::EOFILE, scanner_.GetLocation());
+
     // first we have to check if there is an identation
     SkipUseless();
 
@@ -313,6 +316,14 @@ Lexer::MatchDelimiters()
         case ':':
             scanner_.AdvanceAll();
             return Token(TokenType::COLON, location);
+        
+        case '-':
+            if (scanner_.PeekMove() == '>')
+            {
+                scanner_.AdvanceAll();
+                return Token(TokenType::RARROW, location);
+            }
+            // fallthrough
 
         default:
             scanner_.UngetAll();
@@ -342,7 +353,7 @@ Lexer::MatchOperatorsAsgn()
     switch (scanner_.PeekMove())
     {
         ASGN_OPERS('+', ADD)
-        ASGN_OPERS('-', SUB)
+        ASGN_OPERS('-', SUB) 
         ASGN_OPERS('*', MUL)
         ASGN_OPERS('/', DIV)
         ASGN_OPERS('%', REM)

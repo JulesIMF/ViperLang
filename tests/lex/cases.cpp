@@ -183,7 +183,7 @@ TEST_CASE("Delims / opers with comments", "[Lex]")
 
 TEST_CASE("BeginEnd 1", "[Lex]")
 {
-    std::stringstream source("function\n"
+    std::stringstream source("function->lol\n"
                                   "  if\n"
                                   "    return\n"
                                   "  else\n"
@@ -192,6 +192,8 @@ TEST_CASE("BeginEnd 1", "[Lex]")
     Lex::Lexer        l{source};
 
     CHECK(l.Matches(Lex::TokenType::FUNCTION));
+    CHECK(l.Matches(Lex::TokenType::RARROW));
+    CHECK(l.Matches(Lex::TokenType::ID));
     CHECK(l.Matches(Lex::TokenType::BEGIN));
     CHECK(l.Matches(Lex::TokenType::IF));
     CHECK(l.Matches(Lex::TokenType::BEGIN));
@@ -209,7 +211,7 @@ TEST_CASE("BeginEnd 1", "[Lex]")
 
 TEST_CASE("BeginEnd 2", "[Lex]")
 {
-    std::stringstream source("function   \n"
+    std::stringstream source("function   ->   lol  \n"
                              "  if \n"
                              "  \n"
                              "\n"
@@ -224,6 +226,8 @@ TEST_CASE("BeginEnd 2", "[Lex]")
     Lex::Lexer        l{source};
 
     CHECK(l.Matches(Lex::TokenType::FUNCTION));
+    CHECK(l.Matches(Lex::TokenType::RARROW));
+    CHECK(l.Matches(Lex::TokenType::ID));
     CHECK(l.Matches(Lex::TokenType::BEGIN));
     CHECK(l.Matches(Lex::TokenType::IF));
     CHECK(l.Matches(Lex::TokenType::BEGIN));
