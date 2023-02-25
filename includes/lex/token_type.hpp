@@ -17,7 +17,7 @@ enum class TokenType
     ERROR,    // returned when error
     WS,       // '\n', '\t', ' '
     COMMENT,  // #
-    EOFILE,      // non-existant
+    EOFILE,   // non-existant
 
     //
     // General tokens
@@ -39,6 +39,9 @@ enum class TokenType
     RBRACK,  // ]
     LBRACE,  // {
     RBRACE,  // }
+    IDENT,   // identation that may be converted to the next two
+    BEGIN,   // new identation
+    END,     // old identation
 
     COMMA,      // ,
     DOT,        // .
@@ -85,6 +88,7 @@ enum class TokenType
     // Keywords
     //
 
+    FUNCTION,  // function
     WHILE,     // while
     FOR,       // for
     BREAK,     // break
@@ -102,7 +106,7 @@ enum class TokenType
 
 ////////////////////////////////////////////////////////////////
 
-const char*
+char const*
 FormatTokenType(TokenType type);
 
 ////////////////////////////////////////////////////////////////

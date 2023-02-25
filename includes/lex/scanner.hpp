@@ -21,8 +21,8 @@ namespace Lex
 class Scanner
 {
 public:
-    using StreamType = std::istream;
-    using CharType = StreamType::char_type;
+    using StreamType               = std::istream;
+    using CharType                 = StreamType::char_type;
     static char constexpr EofConst = '\0';
 
     Scanner(StreamType& source) :
@@ -58,7 +58,7 @@ public:
             {
                 column_++;
             }
-        
+
         advanced_ptr_ += shift;
     }
 
@@ -111,23 +111,30 @@ public:
         return value;
     }
 
-    void
+    unsigned int
     SkipWhile(std::function<bool(CharType)> predicat)
     {
+        unsigned int totalSkipped = 0;
         while (!Eof() && predicat(Peek()))
+        {
             Get();
+            totalSkipped++;
+        }
+
+        return totalSkipped;
     }
 
-    void
+    unsigned int
     SkipToNewLine()
     {
-        SkipWhile([](CharType c) { return c != '\n'; });
+        return SkipWhile([](CharType c) { return c != '\n'; });
     }
 
-    void
+    unsigned int
     SkipWhiteSpace()
     {
-        SkipWhile([](CharType c) { return !!isspace(c); });
+        return SkipWhile([](CharType c)
+                         { return !!isspace(c) && c != '\n'; });
     }
 
     void
@@ -149,13 +156,13 @@ public:
     }
 
 protected:
-    StreamType& source_;
+    StreamType&           source_;
     std::vector<CharType> buffer_;
-    int buffer_ptr_ = 0;
-    int advanced_ptr_ = 0;
+    int                   buffer_ptr_   = 0;
+    int                   advanced_ptr_ = 0;
 
-    size_t line_ = 0;
-    size_t column_ = 0;
+    size_t                line_         = 0;
+    size_t                column_       = 0;
 
     void
     TryEnsureBufferNotEmpty_()
