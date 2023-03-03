@@ -1,12 +1,12 @@
+#include <cassert>
+#include <cctype>
+#include <cstddef>
+#include <cstdint>
 #include <lex/ident_table.hpp>
+#include <lex/lexer.hpp>
 #include <lex/scanner.hpp>
 #include <lex/token.hpp>
 #include <lex/token_type.hpp>
-#include <cctype>
-#include <cstddef>
-#include <cassert>
-#include <cstdint>
-#include <lex/lexer.hpp>
 #include <optional>
 #include <string>
 
@@ -14,63 +14,69 @@ namespace Lex
 {
 
 Lexer::Lexer(std::istream& source) :
+    curr_(0),
     scanner_{source},
     identationLevel_({0})
 {
 }
 
-Token
+void
 Lexer::GetNextToken()
 {
     if (scanner_.Eof())
-        return Token(TokenType::EOFILE, scanner_.GetLocation());
+    {
+        PushToken(Token(Token(TokenType::EOFILE, scanner_.GetLocation())));
+        return;
+    }
 
     // first we have to check if there is an identation
     SkipUseless();
 
-    if (auto ident = MatchBeginEnd())
+    if (MatchBeginEnd())
     {
-        return *ident;
+        return;
     }
 
-    if (auto del = MatchDelimiters())
+    if (MatchDelimiters())
     {
-        return *del;
+        return;
     }
 
-    if (auto op = MatchOperatorsAsgn())
+    if (MatchOperatorsAsgn())
     {
-        return *op;
+        return;
     }
 
-    if (auto lit = MatchLiterals())
+    if (MatchLiterals())
     {
-        return *lit;
+        return;
     }
 
-    if (auto word = MatchWords())
+    if (MatchWords())
     {
-        return *word;
+        return;
     }
 
     // FMT_ASSERT(false, "Could not match any token\n");
-    return Token(TokenType::ERROR);  // calm analyzers
+    // PushToken(Token(TokenType::ERROR);  // calm analyzer)s
+    // return true;
 }
 
-Token
-Lexer::GetPreviousToken()
+void
+Lexer::PushToken(Token token)
 {
-    return prev_;
+    tokens_.push_back(token);
 }
 
 void
 Lexer::Advance()
 {
-    if (curr_.IsNone())
+    assert(curr_ <= tokens_.size());
+
+    if (curr_ == tokens_.size())
         return;
 
-    prev_ = curr_;
-    curr_ = GetNextToken();
+    curr_++;
 }
 
 bool
@@ -91,10 +97,11 @@ Lexer::Matches(Lex::TokenType type)
 Token
 Lexer::Peek()
 {
-    if (curr_.IsNone())
-        curr_ = GetNextToken();
+    assert(curr_ <= tokens_.size());
+    if (curr_ == tokens_.size())
+        GetNextToken();
 
-    return curr_;
+    return tokens_[curr_];
 }
 
 bool
@@ -115,8 +122,7 @@ Lexer::SkipEmptyLines()
 
     while (scanner_.PeekMove() == '\n')
     {
-        while (scanner_.Peek() == ' ' ||
-               scanner_.Peek() == '\t')
+        while (scanner_.Peek() == ' ' || scanner_.Peek() == '\t')
         {
             scanner_.MovePtr();
         }
@@ -150,13 +156,12 @@ Lexer::SkipComments()
         skippedAny = true;
         scanner_.Get();  // skip comment symbol
         SkipToNewLine();
-        
+
         // skipping possible empty lines with comments
         if (scanner_.Peek() == '\n')
         {
             scanner_.MovePtr();
-            while (scanner_.Peek() == ' ' ||
-               scanner_.Peek() == '\t')
+            while (scanner_.Peek() == ' ' || scanner_.Peek() == '\t')
             {
                 scanner_.MovePtr();
             }
@@ -178,12 +183,12 @@ Lexer::SkipComments()
 bool
 Lexer::SkipUseless()
 {
-    bool skippedAny = false;
+    bool skippedAny           = false;
     bool skippedThisIteration = false;
 
     do
     {
-        skippedAny = skippedThisIteration;
+        skippedAny           = skippedThisIteration;
         skippedThisIteration = false;
 
         skippedThisIteration |= SkipWhiteSpace();
@@ -198,14 +203,16 @@ Lexer::SkipUseless()
 std::optional<Token>
 Lexer::MatchIdentation()
 {
-    if (scanner_.Peek() != '\n')
+    if (scanner_.Peek() != '\n' && scanner_.GetLocation().ptr != 0)
         return std::nullopt;
 
-    scanner_.Get();  // skipped new line
-    auto location = scanner_.GetLocation();
+    if (scanner_.GetLocation().ptr != 0)
+        scanner_.Get();  // skipped new line
 
-    char symbol = '\0';
-    unsigned int ident = 0;
+    auto         location = scanner_.GetLocation();
+
+    char         symbol   = '\0';
+    unsigned int ident    = 0;
     while ((symbol = scanner_.Peek()) == ' ' || symbol == '\t')
     {
         ident += (symbol == ' ') ? 1 : tabSize_;
@@ -220,7 +227,7 @@ Lexer::MatchIdentation()
     return token;
 }
 
-std::optional<Token>
+bool
 Lexer::MatchBeginEnd()
 {
     // we need to keep it beacause in situations like
@@ -230,7 +237,6 @@ Lexer::MatchBeginEnd()
     // n = 1 <----
     // we need to give two END tokens, not one
 
-
     assert(!identationLevel_.empty());
 
     // if nothing left from previous, we have either begin or nothing
@@ -238,40 +244,48 @@ Lexer::MatchBeginEnd()
     {
         identToken = MatchIdentation();
         if (identToken == std::nullopt)
-            return std::nullopt;
+            return false;
     }
 
     auto ident =
         std::get<IdentationAttributes>(identToken->attributes).ident;
 
+    auto location = identToken->location;
+
     if (ident == identationLevel_.top())
     {
         identToken = std::nullopt;
-        return std::nullopt;
+        return false;
+
+        // TODO: replace "return false;" with following:
+        // PushToken(Token(TokenType::STMT, location));
+        // return true;
     }
 
     if (ident > identationLevel_.top())
     {
         identationLevel_.push(ident);
         identToken = std::nullopt;
-        return Token(TokenType::BEGIN, identToken->location);
+        PushToken(Token(TokenType::BEGIN, location));
+        // TODO: deal with STMT like that:
+        // PushToken(Token(TokenType::STMT, location));
+        return true;
     }
 
-    // ident keeps new identation size which is less than previous ones
-    // so we will use it until we can
+    // ident keeps new identation size which is less than previous
+    // ones so we will use it until we can
 
     assert(identationLevel_.size() >= 2);
     identationLevel_.pop();
 
-    auto location = identToken->location;
-
     if (ident >= identationLevel_.top())
         identToken = std::nullopt;
-    
-    return Token(TokenType::END, location);
+
+    PushToken(Token(TokenType::END, location));
+    return true;
 }
 
-std::optional<Token>
+bool
 Lexer::MatchDelimiters()
 {
     auto location = scanner_.GetLocation();
@@ -279,59 +293,70 @@ Lexer::MatchDelimiters()
     {
         case '(':
             scanner_.AdvanceAll();
-            return Token(TokenType::LPAREN, location);
+            PushToken(Token(TokenType::LPAREN, location));
+            return true;
 
         case ')':
             scanner_.AdvanceAll();
-            return Token(TokenType::RPAREN, location);
+            PushToken(Token(TokenType::RPAREN, location));
+            return true;
 
         case '[':
             scanner_.AdvanceAll();
-            return Token(TokenType::LBRACK, location);
+            PushToken(Token(TokenType::LBRACK, location));
+            return true;
 
         case ']':
             scanner_.AdvanceAll();
-            return Token(TokenType::RBRACK, location);
+            PushToken(Token(TokenType::RBRACK, location));
+            return true;
 
         case '{':
             scanner_.AdvanceAll();
-            return Token(TokenType::LBRACE, location);
+            PushToken(Token(TokenType::LBRACE, location));
+            return true;
 
         case '}':
             scanner_.AdvanceAll();
-            return Token(TokenType::RBRACE, location);
+            PushToken(Token(TokenType::RBRACE, location));
+            return true;
 
         case ',':
             scanner_.AdvanceAll();
-            return Token(TokenType::COMMA, location);
+            PushToken(Token(TokenType::COMMA, location));
+            return true;
 
         case '.':
             scanner_.AdvanceAll();
-            return Token(TokenType::DOT, location);
+            PushToken(Token(TokenType::DOT, location));
+            return true;
 
         case ';':
             scanner_.AdvanceAll();
-            return Token(TokenType::SEMICOLON, location);
+            PushToken(Token(TokenType::SEMICOLON, location));
+            return true;
 
         case ':':
             scanner_.AdvanceAll();
-            return Token(TokenType::COLON, location);
-        
+            PushToken(Token(TokenType::COLON, location));
+            return true;
+
         case '-':
             if (scanner_.PeekMove() == '>')
             {
                 scanner_.AdvanceAll();
-                return Token(TokenType::RARROW, location);
+                PushToken(Token(TokenType::RARROW, location));
+                return true;
             }
             // fallthrough
 
         default:
             scanner_.UngetAll();
-            return std::nullopt;
+            return false;
     }
 }
 
-std::optional<Token>
+bool
 Lexer::MatchOperatorsAsgn()
 {
     // If we haven`t returned after this switch,
@@ -344,16 +369,18 @@ Lexer::MatchOperatorsAsgn()
         if (scanner_.Peek() != '=')                                  \
         {                                                            \
             scanner_.AdvanceAll();                                   \
-            return Token(TokenType::type, location);                 \
+            PushToken(Token(TokenType::type, location));             \
+            return true;                                             \
         }                                                            \
         scanner_.MovePtr();                                          \
         scanner_.AdvanceAll();                                       \
-        return Token(TokenType::type##_ASGN, location);
+        PushToken(Token(TokenType::type##_ASGN, location));          \
+        return true;
 
     switch (scanner_.PeekMove())
     {
         ASGN_OPERS('+', ADD)
-        ASGN_OPERS('-', SUB) 
+        ASGN_OPERS('-', SUB)
         ASGN_OPERS('*', MUL)
         ASGN_OPERS('/', DIV)
         ASGN_OPERS('%', REM)
@@ -365,13 +392,15 @@ Lexer::MatchOperatorsAsgn()
             {
                 scanner_.MovePtr();
                 scanner_.AdvanceAll();
-                return Token(TokenType::AND_ASGN, location);
+                PushToken(Token(TokenType::AND_ASGN, location));
+                return true;
             }
 
             if (scanner_.Peek() != '&')
             {
                 scanner_.AdvanceAll();
-                return Token(TokenType::AND, location);
+                PushToken(Token(TokenType::AND, location));
+                return true;
             }
 
             scanner_.MovePtr();
@@ -380,24 +409,28 @@ Lexer::MatchOperatorsAsgn()
             {
                 scanner_.MovePtr();
                 scanner_.AdvanceAll();
-                return Token(TokenType::LAND_ASGN, location);
+                PushToken(Token(TokenType::LAND_ASGN, location));
+                return true;
             }
 
             scanner_.AdvanceAll();
-            return Token(TokenType::LAND, location);
+            PushToken(Token(TokenType::LAND, location));
+            return true;
 
         case '|':
             if (scanner_.Peek() == '=')
             {
                 scanner_.MovePtr();
                 scanner_.AdvanceAll();
-                return Token(TokenType::OR_ASGN, location);
+                PushToken(Token(TokenType::OR_ASGN, location));
+                return true;
             }
 
             if (scanner_.Peek() != '|')
             {
                 scanner_.AdvanceAll();
-                return Token(TokenType::OR, location);
+                PushToken(Token(TokenType::OR, location));
+                return true;
             }
 
             scanner_.MovePtr();
@@ -406,22 +439,26 @@ Lexer::MatchOperatorsAsgn()
             {
                 scanner_.MovePtr();
                 scanner_.AdvanceAll();
-                return Token(TokenType::LOR_ASGN, location);
+                PushToken(Token(TokenType::LOR_ASGN, location));
+                return true;
             }
 
             scanner_.AdvanceAll();
-            return Token(TokenType::LOR, location);
+            PushToken(Token(TokenType::LOR, location));
+            return true;
 
 #define REL(c, neq, eq)                                              \
     case c:                                                          \
         if (scanner_.Peek() != '=')                                  \
         {                                                            \
             scanner_.AdvanceAll();                                   \
-            return Token(TokenType::neq, location);                  \
+            PushToken(Token(TokenType::neq, location));              \
+            return true;                                             \
         }                                                            \
         scanner_.MovePtr();                                          \
         scanner_.AdvanceAll();                                       \
-        return Token(TokenType::eq, location);
+        PushToken(Token(TokenType::eq, location));                   \
+        return true;
 
             REL('!', NOT, NEQ)
             REL('<', LSS, LEQ)
@@ -431,11 +468,11 @@ Lexer::MatchOperatorsAsgn()
 
         default:
             scanner_.UngetAll();
-            return std::nullopt;
+            return false;
     }
 }
 
-std::optional<Token>
+bool
 Lexer::MatchLiterals()
 {
     if (auto numLiteral = MatchNumericLiteral())
@@ -453,7 +490,7 @@ Lexer::MatchLiterals()
         return stringLiteral;
     }
 
-    return std::nullopt;
+    return false;
 }
 
 static uint64_t
@@ -483,7 +520,7 @@ DigitToNumber(unsigned int base, char digit)
     return base;
 }
 
-std::optional<Token>
+bool
 Lexer::MatchNumericLiteral()
 {
     enum Base
@@ -494,7 +531,7 @@ Lexer::MatchNumericLiteral()
         HEX = 16
     };
 
-    Base base = Base::DEC;
+    Base     base  = Base::DEC;
     uint64_t value = 0;
 
     switch (scanner_.Peek())
@@ -534,8 +571,9 @@ Lexer::MatchNumericLiteral()
                                 scanner_.GetLocation());
                     token.attributes =
                         IntAttributes{.base = base, .value = value};
-
-                    return token;
+                    
+                    PushToken(token);
+                    return true;
                 }
             }
             break;
@@ -586,7 +624,7 @@ Lexer::MatchNumericLiteral()
             break;
 
         default:
-            return std::nullopt;
+            return false;
     }
 
     if (base != Base::DEC &&
@@ -595,7 +633,7 @@ Lexer::MatchNumericLiteral()
         // we got situation like 0x???, but 0x is not a valid hex
         // number!
         scanner_.UngetAll();
-        return std::nullopt;
+        return false;
     }
 
     while (true)
@@ -612,7 +650,8 @@ Lexer::MatchNumericLiteral()
     scanner_.AdvanceAll();
     token.attributes = IntAttributes{.base = base, .value = value};
 
-    return token;
+    PushToken(token);
+    return true;
 }
 
 char
@@ -658,16 +697,16 @@ CharFromEscaped(char value)
     }
 }
 
-std::optional<Token>
+bool
 Lexer::MatchStringLiteral()
 {
     if (scanner_.Peek() != '"')
-        return std::nullopt;
+        return false;
 
-    auto location = scanner_.GetLocation();
+    auto        location = scanner_.GetLocation();
     std::string literal;
     std::string value;
-    bool scaning = false;
+    bool        scaning = false;
 
     // we want to glue several literals into one
     while (scanner_.Peek() == '"')
@@ -707,17 +746,18 @@ Lexer::MatchStringLiteral()
         scanner_.UngetAll();  // we encountered a problem while
                               // parsing last literal
 
-    auto token = Token(TokenType::STRING, location);
+    auto token       = Token(TokenType::STRING, location);
     token.attributes = StringAttributes{literal};
 
-    return token;
+    PushToken(token);
+    return true;
 }
 
-std::optional<Token>
+bool
 Lexer::MatchCharLiteral()
 {
     if (scanner_.Peek() != '\'')
-        return std::nullopt;
+        return false;
 
     auto location = scanner_.GetLocation();
     scanner_.MovePtr();
@@ -731,9 +771,10 @@ Lexer::MatchCharLiteral()
             // empty literal is '\0'
             scanner_.MovePtr();
             scanner_.AdvanceAll();
-            auto token = Token(TokenType::CHAR, location);
+            auto token       = Token(TokenType::CHAR, location);
             token.attributes = CharAttributes{.empty = true};
-            return token;
+            PushToken(token);
+            return true;
         }
 
         case '\\':
@@ -742,7 +783,7 @@ Lexer::MatchCharLiteral()
             if (scanner_.Eof())
             {
                 scanner_.UngetAll();
-                return std::nullopt;
+                return false;
             }
 
             value = CharFromEscaped(scanner_.PeekMove());
@@ -755,21 +796,22 @@ Lexer::MatchCharLiteral()
     if (scanner_.PeekMove() != '\'')
     {
         scanner_.UngetAll();
-        return std::nullopt;
+        return false;
     }
 
     auto token = Token(TokenType::CHAR, location);
     scanner_.AdvanceAll();
     token.attributes = CharAttributes{.value = value, .empty = false};
-    return token;
+    PushToken(token);
+    return true;
 }
 
-std::optional<Token>
+bool
 Lexer::MatchWords()
 {
     auto location = scanner_.GetLocation();
     if (scanner_.Peek() != '_' && !isalpha(scanner_.Peek()))
-        return std::nullopt;
+        return false;
 
     std::string id;
     id += scanner_.PeekMove();
@@ -781,13 +823,17 @@ Lexer::MatchWords()
     auto type = table_.LookupWord(id);
     if (type == TokenType::NONE)
     {
-        auto token = Token(TokenType::ID, location);
+        auto token       = Token(TokenType::ID, location);
         token.attributes = IdAttributes{id};
-        return token;
+        PushToken(token);
+        return true;
     }
 
     else
-        return Token(type);
+    {
+        PushToken(Token(type));
+        return true;
+    }
 }
 
 }  // namespace Lex

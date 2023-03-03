@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstddef>
 #include <lex/ident_table.hpp>
 #include <lex/token.hpp>
 
@@ -8,6 +9,7 @@
 #include <optional>
 #include <stack>
 #include <string>
+#include <vector>
 
 namespace Lex
 {
@@ -17,17 +19,17 @@ class Lexer
 public:
     Lexer(std::istream& source);
 
-    Token
+    void
     GetNextToken();
+
+    void
+    PushToken(Token token);
 
     void
     Advance();
 
     Token
     Peek();
-
-    Token
-    GetPreviousToken();
 
     // Check current token type and maybe consume it.
     bool
@@ -52,40 +54,37 @@ private:
     std::optional<Token>
     MatchIdentation();
 
-    std::optional<Token>
+    bool
     MatchBeginEnd();
 
-    std::optional<Token>
+    bool
     MatchDelimiters();
 
-    std::optional<Token>
+    bool
     MatchOperatorsAsgn();
 
-    std::optional<Token>
+    bool
     MatchLiterals();
 
-    std::optional<Token>
+    bool
     MatchNumericLiteral();
 
-    std::optional<Token>
+    bool
     MatchStringLiteral();
 
-    std::optional<Token>
+    bool
     MatchCharLiteral();
 
-    std::optional<Token>
+    bool
     MatchWords();
 
     void
     SendWarning();
 
 private:
-    // For easy access to locations
-    Token prev_{};
-
-    // Current token
-    Token curr_{};
-
+    std::vector<Token> tokens_;
+    size_t curr_ = 0;
+    
     Scanner scanner_;
     IdentTable table_;
 
