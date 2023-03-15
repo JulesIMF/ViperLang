@@ -183,7 +183,7 @@ TEST_CASE("Delims / opers with comments", "[Lex]")
 
 TEST_CASE("BeginEnd 1", "[Lex]")
 {
-    std::stringstream source("function->lol\n"
+    std::stringstream source("def->lol\n"
                                   "  if\n"
                                   "    return\n"
                                   "  else\n"
@@ -191,7 +191,7 @@ TEST_CASE("BeginEnd 1", "[Lex]")
                                   "      return\n");
     Lex::Lexer        l{source};
 
-    CHECK(l.Matches(Lex::TokenType::FUNCTION));
+    CHECK(l.Matches(Lex::TokenType::DEF));
     CHECK(l.Matches(Lex::TokenType::RARROW));
     CHECK(l.Matches(Lex::TokenType::ID));
     CHECK(l.Matches(Lex::TokenType::BEGIN));
@@ -211,7 +211,7 @@ TEST_CASE("BeginEnd 1", "[Lex]")
 
 TEST_CASE("BeginEnd 2", "[Lex]")
 {
-    std::stringstream source("function   ->   lol  \n"
+    std::stringstream source("def   ->   lol  \n"
                              "  if \n"
                              "  \n"
                              "\n"
@@ -225,7 +225,7 @@ TEST_CASE("BeginEnd 2", "[Lex]")
                              "      return\n");
     Lex::Lexer        l{source};
 
-    CHECK(l.Matches(Lex::TokenType::FUNCTION));
+    CHECK(l.Matches(Lex::TokenType::DEF));
     CHECK(l.Matches(Lex::TokenType::RARROW));
     CHECK(l.Matches(Lex::TokenType::ID));
     CHECK(l.Matches(Lex::TokenType::BEGIN));
@@ -241,4 +241,39 @@ TEST_CASE("BeginEnd 2", "[Lex]")
     CHECK(l.Matches(Lex::TokenType::END));
     CHECK(l.Matches(Lex::TokenType::END));
     CHECK(l.Matches(Lex::TokenType::END));
+}
+
+TEST_CASE("EOFILE", "[Lex]")
+{
+    std::stringstream source("def   ->   lol  \n"
+                             "  if \n"
+                             "  \n"
+                             "\n"
+                             "            \n"
+                             "\n"
+                             "    return\n"
+                             "\n"
+                             "  else\n"
+                             "    if\n"
+                             "\n"
+                             "      return");
+    Lex::Lexer        l{source};
+
+    CHECK(l.Matches(Lex::TokenType::DEF));
+    CHECK(l.Matches(Lex::TokenType::RARROW));
+    CHECK(l.Matches(Lex::TokenType::ID));
+    CHECK(l.Matches(Lex::TokenType::BEGIN));
+    CHECK(l.Matches(Lex::TokenType::IF));
+    CHECK(l.Matches(Lex::TokenType::BEGIN));
+    CHECK(l.Matches(Lex::TokenType::RETURN));
+    CHECK(l.Matches(Lex::TokenType::END));
+    CHECK(l.Matches(Lex::TokenType::ELSE));
+    CHECK(l.Matches(Lex::TokenType::BEGIN));
+    CHECK(l.Matches(Lex::TokenType::IF));
+    CHECK(l.Matches(Lex::TokenType::BEGIN));
+    CHECK(l.Matches(Lex::TokenType::RETURN));
+    CHECK(l.Matches(Lex::TokenType::END));
+    CHECK(l.Matches(Lex::TokenType::END));
+    CHECK(l.Matches(Lex::TokenType::END));
+    CHECK(l.Matches(Lex::TokenType::EOFILE));
 }

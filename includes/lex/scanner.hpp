@@ -168,7 +168,11 @@ protected:
     TryEnsureBufferNotEmpty_()
     {
         if (int(buffer_.size()) <= buffer_ptr_ && !source_.eof())
-            buffer_.push_back(source_.get());
+        {
+            auto value = source_.get();
+            if (value != EOF)
+                buffer_.push_back(value);
+        }
     }
 };
 

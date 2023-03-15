@@ -23,12 +23,6 @@ Lexer::Lexer(std::istream& source) :
 void
 Lexer::GetNextToken()
 {
-    if (scanner_.Eof())
-    {
-        PushToken(Token(Token(TokenType::EOFILE, scanner_.GetLocation())));
-        return;
-    }
-
     // first we have to check if there is an identation
     SkipUseless();
 
@@ -54,6 +48,13 @@ Lexer::GetNextToken()
 
     if (MatchWords())
     {
+        return;
+    }
+
+    if (scanner_.Eof())
+    {
+        PushToken(
+            Token(Token(TokenType::EOFILE, scanner_.GetLocation())));
         return;
     }
 
@@ -203,7 +204,7 @@ Lexer::SkipUseless()
 std::optional<Token>
 Lexer::MatchIdentation()
 {
-    if (scanner_.Peek() != '\n' && scanner_.GetLocation().ptr != 0)
+    if (scanner_.Peek() != '\n' && scanner_.GetLocation().ptr != 0 && !scanner_.Eof())
         return std::nullopt;
 
     if (scanner_.GetLocation().ptr != 0)
