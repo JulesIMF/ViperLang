@@ -100,12 +100,15 @@ private:
         // Keywords
         //
 
-        type_["function"] = TokenType::FUNCTION;
+        type_["def"]      = TokenType::DEF;
+        type_["with"]     = TokenType::WITH;
         type_["while"]    = TokenType::WHILE;
         type_["for"]      = TokenType::FOR;
+        type_["in"]       = TokenType::IN;
         type_["break"]    = TokenType::BREAK;
         type_["continue"] = TokenType::CONTINUE;
         type_["if"]       = TokenType::IF;
+        type_["elif"]     = TokenType::ELIF;
         type_["else"]     = TokenType::ELSE;
         type_["switch"]   = TokenType::SWITCH;
         type_["case"]     = TokenType::CASE;

@@ -89,12 +89,15 @@ enum class TokenType
     // Keywords
     //
 
-    FUNCTION,  // function
+    DEF,       // def
+    WITH,      // with
     WHILE,     // while
     FOR,       // for
+    IN,        // in
     BREAK,     // break
     CONTINUE,  // continue
     IF,        // if
+    ELIF,      // elif
     ELSE,      // else
     SWITCH,    // switch
     CASE,      // case
