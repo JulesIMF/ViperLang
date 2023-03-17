@@ -69,7 +69,7 @@ Ret                 -> <RETURN> Expr
 Break               -> <BREAK>
 Continue            -> <CONTINUE>
 
-Call                -> <ID> ArgPassList
+CallStmt            -> <ID> ArgPassList
 ArgPassList         -> <LPAREN> {Expr {<COMMA>Expr}*}? <RPAREN>
 
 VarDecl             -> VarDeclInit | <ID> <COMMA> Type
@@ -109,11 +109,12 @@ Comp                -> Form { <LSS> +
 Form                -> Term {{<ADD> + <SUB>} Term}*
 Term                -> Prim {{<MUL> + <DIV>} Prim}* 
 Prim                -> {<NOT> + <SUB>}? Prim  | 
-                       Call                   | 
+                       CallExpr               | 
                        <LPAREN> Expr <RPAREN> | 
                        Imm                    | 
                        Var
 
+CallExpr            -> <ID> ArgPassList
 Imm                 -> <INT> | <FLOAT> | <CHAR> | <STRING>
 Var                 -> <ID>
 
