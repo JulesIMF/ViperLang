@@ -1,4 +1,28 @@
+/*++
+
+Copyright (c) 2023 JulesIMF, MIPT
+
+Module Name:
+
+    IdentTable.hpp
+
+Abstract:
+
+    This table maps Viper keywords to lex tokens.
+
+Author / Creation date:
+
+    JulesIMF / 09.02.23
+
+Revision History:
+
+--*/
+
 #pragma once
+
+//
+// Includes / usings
+//
 
 #include <Lex/Token.hpp>
 #include <Lex/TokenType.hpp>
@@ -7,6 +31,10 @@
 #include <string>
 
 #include <fmt/core.h>
+
+//
+// Definitions
+//
 
 namespace Lex
 {

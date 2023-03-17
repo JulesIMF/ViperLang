@@ -1,11 +1,35 @@
+/*++
+
+Copyright (c) 2023 JulesIMF, MIPT
+
+Module Name:
+
+    Scanner.hpp
+
+Abstract:
+
+    Scanner helps Lexer with text processing.
+
+Author / Creation date:
+
+    JulesIMF / 09.02.23
+
+Revision History:
+
+--*/
+
 #pragma once
 
+//
+// Includes / usings
+//
+
+#include <Lex/Location.hpp>
+#include <Lex/TokenType.hpp>
 #include <algorithm>
 #include <cctype>
 #include <cstdio>
 #include <functional>
-#include <Lex/Location.hpp>
-#include <Lex/TokenType.hpp>
 
 #include <fmt/core.h>
 
@@ -14,6 +38,10 @@
 #include <istream>
 #include <string>
 #include <vector>
+
+//
+// Definitions
+//
 
 namespace Lex
 {

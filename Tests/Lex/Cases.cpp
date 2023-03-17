@@ -1,4 +1,4 @@
-#include "lex/token.hpp"
+#include <Lex/Token.hpp>
 #include <Lex/Lexer.hpp>
 
 // Finally,

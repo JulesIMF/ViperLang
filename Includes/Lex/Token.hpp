@@ -1,4 +1,29 @@
+/*++
+
+Copyright (c) 2023 JulesIMF, MIPT
+
+Module Name:
+
+    Token.hpp
+
+Abstract:
+
+    Token is structure produced by the lexer.
+    It is the terminal symbol used in the parser.
+
+Author / Creation date:
+
+    JulesIMF / 09.02.23
+
+Revision History:
+
+--*/
+
 #pragma once
+
+//
+// Includes / usings
+//
 
 #include <Lex/Location.hpp>
 #include <Lex/Scanner.hpp>

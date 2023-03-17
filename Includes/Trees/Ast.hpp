@@ -4,7 +4,7 @@ Copyright (c) 2023 JulesIMF, MIPT
 
 Module Name:
 
-    ast.hpp
+    Ast.hpp
 
 Abstract:
 
@@ -26,7 +26,7 @@ Revision History:
 
 #include <Lex/Location.hpp>
 #include <Lex/Token.hpp>
-#include <Trees/BasicTree.hpp"
+#include <Trees/BasicTree.hpp>
 #include <cstddef>
 #include <vector>
 

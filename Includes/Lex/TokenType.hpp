@@ -1,4 +1,28 @@
+/*++
+
+Copyright (c) 2023 JulesIMF, MIPT
+
+Module Name:
+
+    TokenType.hpp
+
+Abstract:
+
+    Token types declaration.
+
+Author / Creation date:
+
+    JulesIMF / 09.02.23
+
+Revision History:
+
+--*/
+
 #pragma once
+
+//
+// Includes / usings
+//
 
 #include <cstdlib>
 

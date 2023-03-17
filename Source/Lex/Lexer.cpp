@@ -1,14 +1,42 @@
-#include <cassert>
-#include <cctype>
-#include <cstddef>
-#include <cstdint>
+/*++
+
+Copyright (c) 2023 JulesIMF, MIPT
+
+Module Name:
+
+    Lexer.hpp
+
+Abstract:
+
+    Lexicographical analyzer (tokenizer) declaration.
+
+Author / Creation date:
+
+    JulesIMF / 09.02.23
+
+Revision History:
+
+--*/
+
+//
+// Includes / usings
+//
+
 #include <Lex/IdentTable.hpp>
 #include <Lex/Lexer.hpp>
 #include <Lex/Scanner.hpp>
 #include <Lex/Token.hpp>
 #include <Lex/TokenType.hpp>
+#include <cassert>
+#include <cctype>
+#include <cstddef>
+#include <cstdint>
 #include <optional>
 #include <string>
+
+//
+// Definitions
+//
 
 namespace Lex
 {

@@ -1,9 +1,38 @@
+/*++
+
+Copyright (c) 2023 JulesIMF, MIPT
+
+Module Name:
+
+    Location.hpp
+
+Abstract:
+
+    Location is structure that keeps where the token
+    was obtained.
+
+Author / Creation date:
+
+    JulesIMF / 09.02.23
+
+Revision History:
+
+--*/
+
 #pragma once
+
+//
+// Includes / usings
+//
 
 #include <fmt/core.h>
 
 #include <cstddef>
 #include <string>
+
+//
+// Definitions
+//
 
 namespace Lex
 {

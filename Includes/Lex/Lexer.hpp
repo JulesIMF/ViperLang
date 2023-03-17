@@ -1,8 +1,32 @@
+/*++
+
+Copyright (c) 2023 JulesIMF, MIPT
+
+Module Name:
+
+    Lexer.hpp
+
+Abstract:
+
+    Lexicographical analyzer (tokenizer) declaration.
+
+Author / Creation date:
+
+    JulesIMF / 09.02.23
+
+Revision History:
+
+--*/
+
 #pragma once
 
-#include <cstddef>
+//
+// Includes / usings
+//
+
 #include <Lex/IdentTable.hpp>
 #include <Lex/Token.hpp>
+#include <cstddef>
 
 #include <fmt/format.h>
 
@@ -10,6 +34,10 @@
 #include <stack>
 #include <string>
 #include <vector>
+
+//
+// Definitions
+//
 
 namespace Lex
 {

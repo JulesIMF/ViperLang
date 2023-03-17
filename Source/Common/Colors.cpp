@@ -1,3 +1,31 @@
+/*++
+
+Copyright (c) 2023 JulesIMF, MIPT
+
+Module Name:
+
+    Colors.cpp
+
+Abstract:
+
+    Terminal escape colors.
+
+Author / Creation date:
+
+    JulesIMF / 26.02.23
+
+Revision History:
+
+--*/
+
+//
+// Includes / usings
+//
+
+//
+// Definitions
+//
+
 namespace TerminalColor
 {
 //
