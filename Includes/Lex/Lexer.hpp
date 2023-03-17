@@ -1,8 +1,8 @@
 #pragma once
 
 #include <cstddef>
-#include <lex/ident_table.hpp>
-#include <lex/token.hpp>
+#include <Lex/IdentTable.hpp>
+#include <Lex/Token.hpp>
 
 #include <fmt/format.h>
 

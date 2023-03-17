@@ -1,5 +1,5 @@
-#include <common/colors.hpp>
-#include <common/message.hpp>
+#include <Common/Colors.hpp>
+#include <Common/Message.hpp>
 
 std::string
 Warning::ToColoredString()

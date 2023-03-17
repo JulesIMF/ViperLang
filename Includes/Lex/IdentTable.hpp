@@ -1,7 +1,7 @@
 #pragma once
 
-#include <lex/token.hpp>
-#include <lex/token_type.hpp>
+#include <Lex/Token.hpp>
+#include <Lex/TokenType.hpp>
 
 #include <map>
 #include <string>

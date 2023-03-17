@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(compilers-course)
+project(Viper)
 
 # --------------------------------------------------------------------
 
@@ -18,11 +18,9 @@ find_package(Catch2 2 REQUIRED)
 
 # --------------------------------------------------------------------
 
-include_directories(includes)
-add_subdirectory(src)
+include_directories(Includes)
+add_subdirectory(Source)
 
-add_subdirectory(app)
-
-add_subdirectory(tests)
+add_subdirectory(Tests)
 
 # --------------------------------------------------------------------

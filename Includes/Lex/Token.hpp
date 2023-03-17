@@ -1,8 +1,8 @@
 #pragma once
 
-#include <lex/location.hpp>
-#include <lex/scanner.hpp>
-#include <lex/token_type.hpp>
+#include <Lex/Location.hpp>
+#include <Lex/Scanner.hpp>
+#include <Lex/TokenType.hpp>
 
 #include <cstddef>
 #include <variant>

@@ -1,15 +1,4 @@
-/*
- * Filename: /home/julesimf/source/MIPT/Compilers/compilers-tasks/.vscode/launch.json
- * Path: /home/julesimf/source/MIPT/Compilers/compilers-tasks/.vscode
- * Created Date: Friday, February 10th 2023, 4:32:41 pm
- * Author: JulesIMF
- * 
- * Copyright (c) 2023 Your Company
- */
 {
-    // Usare IntelliSense per informazioni sui possibili attributi.
-    // Al passaggio del mouse vengono visualizzate le descrizioni degli attributi esistenti.
-    // Per altre informazioni, visitare: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {

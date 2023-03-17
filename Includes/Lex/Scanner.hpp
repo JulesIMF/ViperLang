@@ -4,8 +4,8 @@
 #include <cctype>
 #include <cstdio>
 #include <functional>
-#include <lex/location.hpp>
-#include <lex/token_type.hpp>
+#include <Lex/Location.hpp>
+#include <Lex/TokenType.hpp>
 
 #include <fmt/core.h>
 

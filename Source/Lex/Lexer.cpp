@@ -2,11 +2,11 @@
 #include <cctype>
 #include <cstddef>
 #include <cstdint>
-#include <lex/ident_table.hpp>
-#include <lex/lexer.hpp>
-#include <lex/scanner.hpp>
-#include <lex/token.hpp>
-#include <lex/token_type.hpp>
+#include <Lex/IdentTable.hpp>
+#include <Lex/Lexer.hpp>
+#include <Lex/Scanner.hpp>
+#include <Lex/Token.hpp>
+#include <Lex/TokenType.hpp>
 #include <optional>
 #include <string>
 

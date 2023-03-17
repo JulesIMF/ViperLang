@@ -1,5 +1,5 @@
 #include "lex/token.hpp"
-#include <lex/lexer.hpp>
+#include <Lex/Lexer.hpp>
 
 // Finally,
 #include <catch2/catch.hpp>
