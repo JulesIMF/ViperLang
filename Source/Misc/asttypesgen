@@ -1,0 +1,546 @@
+class File;
+class SuperStmtList;
+class SuperStmt;
+class StmtList;
+class StmtBlock;
+class FncDef;
+class Stmt;
+class StmtSemiColon;
+class StmtColon;
+class Ret;
+class Break;
+class Continue;
+class Call;
+class ArgPassList;
+class VarDecl;
+class VarDeclInit;
+class Asgn;
+class If;
+class While;
+class For;
+class ArgDefList;
+class Type;
+class Cond;
+class Expr;
+class Comp;
+class Form;
+class Term;
+class Prim;
+class Imm;
+class Var;
+
+
+
+virtual void File(File*) = 0;
+virtual void SuperStmtList(SuperStmtList*) = 0;
+virtual void SuperStmt(SuperStmt*) = 0;
+virtual void StmtList(StmtList*) = 0;
+virtual void StmtBlock(StmtBlock*) = 0;
+virtual void FncDef(FncDef*) = 0;
+virtual void Stmt(Stmt*) = 0;
+virtual void StmtSemiColon(StmtSemiColon*) = 0;
+virtual void StmtColon(StmtColon*) = 0;
+virtual void Ret(Ret*) = 0;
+virtual void Break(Break*) = 0;
+virtual void Continue(Continue*) = 0;
+virtual void Call(Call*) = 0;
+virtual void ArgPassList(ArgPassList*) = 0;
+virtual void VarDecl(VarDecl*) = 0;
+virtual void VarDeclInit(VarDeclInit*) = 0;
+virtual void Asgn(Asgn*) = 0;
+virtual void If(If*) = 0;
+virtual void While(While*) = 0;
+virtual void For(For*) = 0;
+virtual void ArgDefList(ArgDefList*) = 0;
+virtual void Type(Type*) = 0;
+virtual void Cond(Cond*) = 0;
+virtual void Expr(Expr*) = 0;
+virtual void Comp(Comp*) = 0;
+virtual void Form(Form*) = 0;
+virtual void Term(Term*) = 0;
+virtual void Prim(Prim*) = 0;
+virtual void Imm(Imm*) = 0;
+virtual void Var(Var*) = 0;
+
+
+
+
+class File : public AstNode
+{
+public:
+    File(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().File(this);
+    }
+};
+
+
+class SuperStmtList : public AstNode
+{
+public:
+    SuperStmtList(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().SuperStmtList(this);
+    }
+};
+
+
+class SuperStmt : public AstNode
+{
+public:
+    SuperStmt(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().SuperStmt(this);
+    }
+};
+
+
+class StmtList : public AstNode
+{
+public:
+    StmtList(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().StmtList(this);
+    }
+};
+
+
+class StmtBlock : public AstNode
+{
+public:
+    StmtBlock(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().StmtBlock(this);
+    }
+};
+
+
+class FncDef : public AstNode
+{
+public:
+    FncDef(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().FncDef(this);
+    }
+};
+
+
+class Stmt : public AstNode
+{
+public:
+    Stmt(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().Stmt(this);
+    }
+};
+
+
+class StmtSemiColon : public AstNode
+{
+public:
+    StmtSemiColon(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().StmtSemiColon(this);
+    }
+};
+
+
+class StmtColon : public AstNode
+{
+public:
+    StmtColon(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().StmtColon(this);
+    }
+};
+
+
+class Ret : public AstNode
+{
+public:
+    Ret(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().Ret(this);
+    }
+};
+
+
+class Break : public AstNode
+{
+public:
+    Break(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().Break(this);
+    }
+};
+
+
+class Continue : public AstNode
+{
+public:
+    Continue(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().Continue(this);
+    }
+};
+
+
+class Call : public AstNode
+{
+public:
+    Call(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().Call(this);
+    }
+};
+
+
+class ArgPassList : public AstNode
+{
+public:
+    ArgPassList(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().ArgPassList(this);
+    }
+};
+
+
+class VarDecl : public AstNode
+{
+public:
+    VarDecl(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().VarDecl(this);
+    }
+};
+
+
+class VarDeclInit : public AstNode
+{
+public:
+    VarDeclInit(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().VarDeclInit(this);
+    }
+};
+
+
+class Asgn : public AstNode
+{
+public:
+    Asgn(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().Asgn(this);
+    }
+};
+
+
+class If : public AstNode
+{
+public:
+    If(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().If(this);
+    }
+};
+
+
+class While : public AstNode
+{
+public:
+    While(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().While(this);
+    }
+};
+
+
+class For : public AstNode
+{
+public:
+    For(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().For(this);
+    }
+};
+
+
+class ArgDefList : public AstNode
+{
+public:
+    ArgDefList(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().ArgDefList(this);
+    }
+};
+
+
+class Type : public AstNode
+{
+public:
+    Type(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().Type(this);
+    }
+};
+
+
+class Cond : public AstNode
+{
+public:
+    Cond(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().Cond(this);
+    }
+};
+
+
+class Expr : public AstNode
+{
+public:
+    Expr(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().Expr(this);
+    }
+};
+
+
+class Comp : public AstNode
+{
+public:
+    Comp(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().Comp(this);
+    }
+};
+
+
+class Form : public AstNode
+{
+public:
+    Form(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().Form(this);
+    }
+};
+
+
+class Term : public AstNode
+{
+public:
+    Term(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().Term(this);
+    }
+};
+
+
+class Prim : public AstNode
+{
+public:
+    Prim(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().Prim(this);
+    }
+};
+
+
+class Imm : public AstNode
+{
+public:
+    Imm(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().Imm(this);
+    }
+};
+
+
+class Var : public AstNode
+{
+public:
+    Var(Lex::Location location) :
+        AstNode(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().Var(this);
+    }
+};
+
