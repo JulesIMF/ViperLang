@@ -1,3 +1,26 @@
+# ++
+#
+# Copyright (c) 2023 JulesIMF, MIPT
+#
+# Module Name:
+#
+#     CMakeLists.txt
+#
+# Abstract:
+#
+#     CMakeLists for libviperlang.
+#     LibViperLang contains main compiler possibilities.
+#
+# Author / Creation date:
+#
+#     JulesIMF / 17.03.23
+#
+# Revision History:
+# 
+# --
+#
+
+
 get_filename_component(LIB_PATH "." ABSOLUTE)
 
 file(GLOB_RECURSE LIB_CXX_SOURCES ${LIB_PATH}/*.cpp)

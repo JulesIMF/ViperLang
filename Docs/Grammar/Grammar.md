@@ -1,3 +1,27 @@
+<!--
+* ++
+*
+* Copyright (c) 2023 JulesIMF, MIPT
+*
+* Module Name:
+*
+*     Grammar.md
+*
+* Abstract:
+*
+*     Grammar description.
+*
+* Author / Creation date:
+*
+*     JulesIMF / 17.03.23
+*
+* Revision History:
+*	17.03.23  23:53  JulesIMF		Split Call into CallExpr and CallStmt
+* 
+* --
+*
+-->
+
 # Viper grammar description
 
 ## Example of code

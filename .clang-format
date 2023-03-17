@@ -1,6 +1,27 @@
-# Inspired by Windows NT style
-# Origin: https://github.com/reactos/reactos/blob/master/.clang-format
-# Copyright ReactOS team
+# ++
+#
+# Copyright (c) 2023 JulesIMF, MIPT
+#
+# Module Name:
+#
+#     .clang-format
+#
+# Abstract:
+#
+#     Describes prefered C/C++ formatting rules
+#
+#     Inspired by Windows NT style
+#     Origin: https://github.com/reactos/reactos/blob/master/.clang-format
+#     Copyright ReactOS team
+#
+# Author / Creation date:
+#
+#     JulesIMF / 09.02.23
+#
+# Revision History:
+# 
+# --
+#
 
 BasedOnStyle: Microsoft
 

@@ -1,3 +1,26 @@
+<!--
+* ++
+*
+* Copyright (c) 2023 JulesIMF, MIPT
+*
+* Module Name:
+*
+*     FoldersStructure.md
+*
+* Abstract:
+*
+*     Description of project structure.
+*
+* Author / Creation date:
+*
+*     JulesIMF / 17.03.23
+*
+* Revision History:
+* 
+* --
+*
+-->
+
 # Structure of folders
 
 Viper is being written in C++ using Clang compiler & tools along with CMake.

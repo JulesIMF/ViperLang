@@ -1,10 +1,40 @@
-#include <Lex/Token.hpp>
+/*++
+
+Copyright (c) 2023 JulesIMF, MIPT
+
+Module Name:
+
+    Cases.cpp
+
+Abstract:
+
+    Tests cases for Lexer.
+
+Author / Creation date:
+
+    JulesIMF / 09.02.23
+
+Revision History:
+
+--*/
+
+
+//
+// Includes / usings
+//
+
 #include <Lex/Lexer.hpp>
+#include <Lex/Token.hpp>
 
 // Finally,
 #include <catch2/catch.hpp>
 
 #include <iostream>
+
+//
+// Definitions
+//
+
 
 TEST_CASE("Lexer: Just works", "[Lex]")
 {

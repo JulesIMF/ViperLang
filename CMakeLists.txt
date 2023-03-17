@@ -1,3 +1,25 @@
+# ++
+#
+# Copyright (c) 2023 JulesIMF, MIPT
+#
+# Module Name:
+#
+#     CMakeLists.txt
+#
+# Abstract:
+#
+#     Main CMakeLists.
+#     Describes project structure.
+#
+# Author / Creation date:
+#
+#     JulesIMF / 09.02.23
+#
+# Revision History:
+# 
+# --
+#
+
 cmake_minimum_required(VERSION 3.16)
 project(Viper)
 
