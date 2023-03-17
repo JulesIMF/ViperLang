@@ -63,6 +63,7 @@ BreakConstructorInitializers: AfterColon
 QualifierAlignment: Right
 BreakBeforeBinaryOperators: None
 ColumnLimit: 70
+AlwaysBreakTemplateDeclarations: true
 
 AlignAfterOpenBracket: Align
 
