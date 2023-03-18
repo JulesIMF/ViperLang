@@ -37,7 +37,7 @@ public:
     T&
     As()
     {
-        return *dynamic_cast<T*>(this);
+        return *static_cast<T*>(this);
     }
 };
 
