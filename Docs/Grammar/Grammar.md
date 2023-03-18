@@ -16,6 +16,7 @@
 *     JulesIMF / 17.03.23
 *
 * Revision History:
+*	18.03.23  04:14  JulesIMF		Fixed some contraversals / mistakes
 *	17.03.23  23:53  JulesIMF		Split Call into CallExpr and CallStmt
 * 
 * --
@@ -70,7 +71,7 @@ File                -> SuperStmtList <EOFILE>
 SuperStmtList       -> {SuperStmt}*
 SuperStmt           -> FncDef | StmtList
 StmtList            -> Stmt {Stmt}*
-StmtBlock           -> <BEGIN> StmtList <END>
+StmtBlock           -> <BEGIN> {Stmt}* <END>
 
 FncDef              -> <DEF> <ID> ArgDefList {<RARROW> Type}? <COLON>
                        StmtBlock
@@ -85,9 +86,7 @@ StmtSemiColon       -> { Ret      +
                          VarDecl  + 
                          Asgn } <SEMICOLON>
                         
-StmtColon           -> { If       +
-                         While    +
-                         For } <COLON> StmtBlock
+StmtColon           ->  If | While | For 
 
 Ret                 -> <RETURN> Expr
 Break               -> <BREAK>
@@ -110,6 +109,8 @@ Asgn                -> LValue { <ASGN>      +
                                 <LAND_ASGN> +
                                 <LOR_ASGN> } Expr
 
+LValue              -> Var
+
 If                  -> <IF> Cond <COMMA> StmtBlock 
                        {<ELIF> Cond <COMMA> StmtBlock}*
                        <ELSE> <COMMA> StmtBlock
@@ -122,21 +123,24 @@ ArgDefList          -> <LPAREN> {VarDecl {<COMMA> VarDecl}*}? <RPAREN>
 Type                -> Id
 
 Cond                -> Expr
-Expr                -> Comp {{<AND> + <OR>} Comp}*  
-Comp                -> Form { <LSS> +
+Expr                -> Logc
+Logc                -> Comp {{<LAND> + <LOR>} Comp}*  
+Comp                -> Form {{ <LSS> +
                               <GTR> +
                               <LEQ> +
                               <GEQ> +
                               <EQL> +
-                              <NEQ>} Form
+                              <NEQ>} Form}*
 
-Form                -> Term {{<ADD> + <SUB>} Term}*
-Term                -> Prim {{<MUL> + <DIV>} Prim}* 
-Prim                -> {<NOT> + <SUB>}? Prim  | 
+Form                -> Term {{<ADD> + <SUB> + <OR>} Term}*
+Term                -> Prim {{<MUL> + <DIV> + <AND>} Prim}*
+Prim                -> Unary                  | 
                        CallExpr               | 
                        <LPAREN> Expr <RPAREN> | 
                        Imm                    | 
                        Var
+
+Unary               -> {<NOT> + <SUB>} Prim
 
 CallExpr            -> <ID> ArgPassList
 Imm                 -> <INT> | <FLOAT> | <CHAR> | <STRING>
