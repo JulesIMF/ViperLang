@@ -26,8 +26,8 @@ Revision History:
 #include <Lex/Lexer.hpp>
 #include <Lex/Location.hpp>
 #include <Lex/Token.hpp>
-#include <Trees/Ast.hpp>
-#include <Trees/AstVisitor.hpp>
+#include <Trees/Parse/Ast.hpp>
+#include <Trees/Parse/AstVisitor.hpp>
 #include <Trees/BasicTree.hpp>
 #include <catch2/catch.hpp>
 

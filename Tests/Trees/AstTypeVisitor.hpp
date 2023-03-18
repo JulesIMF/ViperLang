@@ -8,7 +8,7 @@ Module Name:
 
 Abstract:
 
-
+    Visits an AST node and writes down its type.
 
 Author / Creation date:
 
@@ -25,7 +25,7 @@ Revision History:
 //
 
 #include <string>
-#include <Trees/Ast.hpp>
+#include <Trees/Parse/Ast.hpp>
 
 //
 // Definitions

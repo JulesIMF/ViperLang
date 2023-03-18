@@ -31,7 +31,7 @@ Revision History:
 #include <optional>
 #include <variant>
 #include <vector>
-#include <Trees/AstVisitor.hpp>
+#include <Trees/Parse/AstVisitor.hpp>
 
 //
 // Definitions
