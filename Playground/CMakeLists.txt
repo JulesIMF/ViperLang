@@ -21,6 +21,7 @@
 
 set(CMAKE_CXX_FLAGS "-O0")
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${VIPER_PATH}/bin")
 get_filename_component(TESTS_PATH "." ABSOLUTE)
 file(GLOB_RECURSE TEST_SOURCES ${TESTS_PATH}/*.cpp)
 
