@@ -1,0 +1,8 @@
+{
+    "author": {
+        "email": "julesimf@yandex.ru",
+        "name": "Ivan Doroshenko"
+    },
+    "name": "Viper",
+    "workspaces": [".."]
+}
