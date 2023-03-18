@@ -8,7 +8,9 @@ Module Name:
 
 Abstract:
 
-
+    AstVisitur is a structure that helps to walk
+    through the tree and dump it / convolute constants /
+    check types / etc.
 
 Author / Creation date:
 

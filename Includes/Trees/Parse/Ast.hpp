@@ -8,7 +8,13 @@ Module Name:
 
 Abstract:
 
+    AST --- Abstract Syntax Tree. Parser uses it to represent
+    the exact source code structure, but skipping useless details
+    unlike CST --- Concrete Syntax Tree.
 
+    Node types inheritance follows grammar structure.
+    If there is a rule A -> B | C, than B and C will be
+    (almost surely) inherited from A.
 
 Author / Creation date:
 
