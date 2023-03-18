@@ -42,7 +42,7 @@ find_package(Catch2 2 REQUIRED)
 
 include_directories(Includes)
 add_subdirectory(Source)
-
+add_subdirectory(Playground)
 add_subdirectory(Tests)
 
 # --------------------------------------------------------------------
