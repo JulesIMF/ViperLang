@@ -49,6 +49,13 @@ struct Location
         return fmt::format("line = {}, column = {}",  //
                            line + 1, column + 1);
     }
+
+    std::string
+    FormatShort() const
+    {
+        return fmt::format("{}:{}",  //
+                           line + 1, column + 1);
+    }
 };
 
 }  // namespace Lex
