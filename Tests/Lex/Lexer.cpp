@@ -18,15 +18,12 @@ Revision History:
 
 --*/
 
-
 //
 // Includes / usings
 //
 
 #include <Lex/Lexer.hpp>
 #include <Lex/Token.hpp>
-
-// Finally,
 #include <catch2/catch.hpp>
 
 #include <iostream>
@@ -35,11 +32,10 @@ Revision History:
 // Definitions
 //
 
-
 TEST_CASE("Lexer: Just works", "[Lex]")
 {
     std::stringstream source("1 + 2");
-    Lex::Lexer l{source};
+    Lex::Lexer        l{source};
 
     CHECK(l.Matches(Lex::TokenType::INT));
     CHECK(l.Matches(Lex::TokenType::ADD));
@@ -49,7 +45,7 @@ TEST_CASE("Lexer: Just works", "[Lex]")
 TEST_CASE("Bracets", "[Lex]")
 {
     std::stringstream source("1 + ('\\n')");
-    Lex::Lexer l{source};
+    Lex::Lexer        l{source};
 
     CHECK(l.Matches(Lex::TokenType::INT));
     CHECK(l.Matches(Lex::TokenType::ADD));
@@ -67,7 +63,7 @@ TEST_CASE("Keywords", "[Lex]")
 {
     std::stringstream source("for if else "
                              "return true false");
-    Lex::Lexer l{source};
+    Lex::Lexer        l{source};
     CHECK(l.Matches(Lex::TokenType::FOR));
     CHECK(l.Matches(Lex::TokenType::IF));
     CHECK(l.Matches(Lex::TokenType::ELSE));
@@ -79,7 +75,7 @@ TEST_CASE("Keywords", "[Lex]")
 TEST_CASE("Consequent", "[Lex]")
 {
     std::stringstream source("!true");
-    Lex::Lexer l{source};
+    Lex::Lexer        l{source};
 
     CHECK(l.Matches(Lex::TokenType::NOT));
     CHECK(l.Matches(Lex::TokenType::TRUE));
@@ -91,7 +87,7 @@ TEST_CASE("Comments", "[Lex]")
                              "# One more comment \n"
                              "1 # Token then comment \n"  // <---
                              "# Comment with no newline");
-    Lex::Lexer l{source};
+    Lex::Lexer        l{source};
 
     // parses to just `1`
     CHECK(l.Matches(Lex::TokenType::INT));
@@ -100,7 +96,7 @@ TEST_CASE("Comments", "[Lex]")
 TEST_CASE("Statement", "[Lex]")
 {
     std::stringstream source("return abc = 0;");
-    Lex::Lexer l{source};
+    Lex::Lexer        l{source};
 
     CHECK(l.Matches(Lex::TokenType::RETURN));
     CHECK(l.Matches(Lex::TokenType::ID));
@@ -114,7 +110,7 @@ TEST_CASE("String literal", "[Lex]")
     std::stringstream source(
         "\"\\\"Hello \"   \n  \"world\\\"\"  \"!\\n\"");
     Lex::Lexer l{source};
-    auto tok = l.Peek();
+    auto       tok = l.Peek();
     CHECK(l.Matches(Lex::TokenType::STRING));
     CHECK(std::get<Lex::StringAttributes>(tok.attributes).value ==
           "\"Hello world\"!\n");
@@ -153,7 +149,7 @@ TEST_CASE("Numeric literals", "[Lex]")
 TEST_CASE("Braces", "[Lex]")
 {
     std::stringstream source("{ }");
-    Lex::Lexer l{source};
+    Lex::Lexer        l{source};
 
     CHECK(l.Matches(Lex::TokenType::LBRACE));
     CHECK(l.Matches(Lex::TokenType::RBRACE));
@@ -162,7 +158,7 @@ TEST_CASE("Braces", "[Lex]")
 TEST_CASE("Assign vs Equals", "[Lex]")
 {
     std::stringstream source("== = ==");
-    Lex::Lexer l{source};
+    Lex::Lexer        l{source};
 
     CHECK(l.Matches(Lex::TokenType::EQL));
     CHECK(l.Matches(Lex::TokenType::ASGN));
@@ -172,7 +168,7 @@ TEST_CASE("Assign vs Equals", "[Lex]")
 TEST_CASE("Delims / opers", "[Lex]")
 {
     std::stringstream source(":;<<==");
-    Lex::Lexer l{source};
+    Lex::Lexer        l{source};
 
     CHECK(l.Matches(Lex::TokenType::COLON));
     CHECK(l.Matches(Lex::TokenType::SEMICOLON));
@@ -184,7 +180,7 @@ TEST_CASE("Delims / opers", "[Lex]")
 TEST_CASE("Delims / opers with spaces", "[Lex]")
 {
     std::stringstream source(": ;\n\n   << ==");
-    Lex::Lexer l{source};
+    Lex::Lexer        l{source};
 
     CHECK(l.Matches(Lex::TokenType::COLON));
     CHECK(l.Matches(Lex::TokenType::SEMICOLON));
@@ -202,7 +198,7 @@ TEST_CASE("Delims / opers with comments", "[Lex]")
                              "<<#comm\n"
                              "#another\n"
                              "== #lol");
-    Lex::Lexer l{source};
+    Lex::Lexer        l{source};
 
     CHECK(l.Matches(Lex::TokenType::COLON));
     CHECK(l.Matches(Lex::TokenType::SEMICOLON));
@@ -214,11 +210,11 @@ TEST_CASE("Delims / opers with comments", "[Lex]")
 TEST_CASE("BeginEnd 1", "[Lex]")
 {
     std::stringstream source("def->lol\n"
-                                  "  if\n"
-                                  "    return\n"
-                                  "  else\n"
-                                  "    if\n"
-                                  "      return\n");
+                             "  if\n"
+                             "    return\n"
+                             "  else\n"
+                             "    if\n"
+                             "      return\n");
     Lex::Lexer        l{source};
 
     CHECK(l.Matches(Lex::TokenType::DEF));

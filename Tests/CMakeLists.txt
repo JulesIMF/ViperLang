@@ -21,6 +21,8 @@
 
 message(STATUS "Generating tests")
 
+set(CMAKE_CXX_FLAGS "-O0")
+
 get_filename_component(TESTS_PATH "." ABSOLUTE)
 file(GLOB_RECURSE TEST_SOURCES ${TESTS_PATH}/*.cpp)
 
