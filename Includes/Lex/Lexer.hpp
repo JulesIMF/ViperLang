@@ -56,6 +56,9 @@ public:
     void
     Advance();
 
+    void
+    Unget(unsigned long count = 1);
+
     Token
     Peek();
 
@@ -63,10 +66,16 @@ public:
     bool
     Matches(Lex::TokenType type);
 
-private:
+    std::vector<Token> const&
+    TokenVector() const
+    {
+        return tokens_;
+    }
+
+protected:
     bool
     SkipWhiteSpace();
-
+    
     bool
     SkipEmptyLines();
 

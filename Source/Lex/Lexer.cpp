@@ -27,7 +27,7 @@ Revision History:
 #include <Lex/Scanner.hpp>
 #include <Lex/Token.hpp>
 #include <Lex/TokenType.hpp>
-#include <cassert>
+#include <Common/Assert.hpp>
 #include <cctype>
 #include <cstddef>
 #include <cstdint>
@@ -100,12 +100,19 @@ Lexer::PushToken(Token token)
 void
 Lexer::Advance()
 {
-    assert(curr_ <= tokens_.size());
+    Assert(curr_ <= tokens_.size());
 
     if (curr_ == tokens_.size())
         return;
 
     curr_++;
+}
+
+void
+Lexer::Unget(unsigned long count)
+{
+    Assert(curr_ >= count);
+    curr_ -= count;
 }
 
 bool
@@ -126,7 +133,7 @@ Lexer::Matches(Lex::TokenType type)
 Token
 Lexer::Peek()
 {
-    assert(curr_ <= tokens_.size());
+    Assert(curr_ <= tokens_.size());
     if (curr_ == tokens_.size())
         GetNextToken();
 
@@ -266,7 +273,7 @@ Lexer::MatchBeginEnd()
     // n = 1 <----
     // we need to give two END tokens, not one
 
-    assert(!identationLevel_.empty());
+    Assert(!identationLevel_.empty());
 
     // if nothing left from previous, we have either begin or nothing
     if (identToken == std::nullopt)
@@ -304,7 +311,7 @@ Lexer::MatchBeginEnd()
     // ident keeps new identation size which is less than previous
     // ones so we will use it until we can
 
-    assert(identationLevel_.size() >= 2);
+    Assert(identationLevel_.size() >= 2);
     identationLevel_.pop();
 
     if (ident >= identationLevel_.top())

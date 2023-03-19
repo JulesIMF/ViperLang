@@ -71,6 +71,36 @@ struct Token
                                     StringAttributes,
                                     IdentationAttributes>;
 
+    IntAttributes
+    GetIntAttributes()
+    {
+        return std::get<IntAttributes>(attributes);
+    }
+
+    IdAttributes
+    GetIdAttributes()
+    {
+        return std::get<IdAttributes>(attributes);
+    }
+
+    CharAttributes
+    GetCharAttributes()
+    {
+        return std::get<CharAttributes>(attributes);
+    }
+
+    StringAttributes
+    GetStringAttributes()
+    {
+        return std::get<StringAttributes>(attributes);
+    }
+
+    IdentationAttributes
+    GetIdentationAttributes()
+    {
+        return std::get<IdentationAttributes>(attributes);
+    }
+
     TokenType  type;
     Location   location;
     Attributes attributes;
