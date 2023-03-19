@@ -35,8 +35,10 @@ Revision History:
 #include <Trees/BasicTree.hpp>
 #include <cstddef>
 #include <optional>
+#include <string>
 #include <variant>
 #include <vector>
+#include <Common/Assert.hpp>
 #include <Trees/Parse/AstVisitor.hpp>
 
 //
@@ -452,6 +454,38 @@ public:
         Lor,
     };
 
+    static std::string
+    KindToStr(Kind kind)
+    {
+        switch(kind)
+        {
+            case Kind::None:
+                return "None";
+            case Kind::Asgn:
+                return "Asgn";
+            case Kind::Add:
+                return "Add";
+            case Kind::Sub:
+                return "Sub";
+            case Kind::Mul:
+                return "Mul";
+            case Kind::Div:
+                return "Div";
+            case Kind::Rem:
+                return "Rem";
+            case Kind::And:
+                return "And";
+            case Kind::Or:
+                return "Or";
+            case Kind::Land:
+                return "Land";
+            case Kind::Lor:
+                return "Lor";
+            default:
+                UnreachableMsg("Unknown kind");
+        }
+    }
+
     Asgn(Lex::Location location) :
         StmtSemiColon(location)
     {
@@ -587,11 +621,10 @@ public:
     Lex::IdAttributes typeId;
 };
 
-template <typename T>
 class BinaryOperation
 {
 public:
-    enum class Kind
+    enum class OpKind
     {
         None,
         Land,
@@ -609,13 +642,51 @@ public:
         And,
     };
 
+    static std::string
+    KindToStr(OpKind kind)
+    {
+        switch (kind)
+        {
+            case OpKind::None:
+                return "None";
+            case OpKind::Land:
+                return "Land";
+            case OpKind::Lor:
+                return "Lor";
+            case OpKind::Lss:
+                return "Lss";
+            case OpKind::Gtr:
+                return "Gtr";
+            case OpKind::Leq:
+                return "Leq";
+            case OpKind::Eql:
+                return "Eql";
+            case OpKind::Neq:
+                return "Neq";
+            case OpKind::Add:
+                return "Add";
+            case OpKind::Sub:
+                return "Sub";
+            case OpKind::Or:
+                return "Or";
+            case OpKind::Mul:
+                return "Mul";
+            case OpKind::Div:
+                return "Div";
+            case OpKind::And:
+                return "And";
+            default:
+                UnreachableMsg("Unknown kind");
+        }
+    }
+
     bool
     TwoOperands()
     {
-        return operands.size() == 2;
+        return operands.size() == 2 && operations.size() == 1;
     }
 
-    T*
+    Expr*
     Left()
     {
         if (TwoOperands())
@@ -624,7 +695,7 @@ public:
         return nullptr;
     }
 
-    T*
+    Expr*
     Right()
     {
         if (TwoOperands())
@@ -633,8 +704,22 @@ public:
         return nullptr;
     }
 
-    std::vector<T*>   operands;
-    std::vector<Kind> operations;
+    OpKind
+    Operation()
+    {
+        if (TwoOperands())
+            return operations[0];
+        
+        return OpKind::None;
+    }
+
+    bool Correct()
+    {
+        return operands.size() == operations.size() + 1;
+    }
+
+    std::vector<Expr*>  operands;
+    std::vector<OpKind> operations;
 };
 
 class Expr : public AstNode
@@ -667,7 +752,7 @@ public:
     }
 };
 
-class Logc : public Expr, public BinaryOperation<Comp>
+class Logc : public Expr, public BinaryOperation
 {
 public:
     Logc(Lex::Location location) :
@@ -688,7 +773,7 @@ public:
     }
 };
 
-class Comp : public Expr, public BinaryOperation<Form>
+class Comp : public Expr, public BinaryOperation
 {
 public:
     Comp(Lex::Location location) :
@@ -709,7 +794,7 @@ public:
     }
 };
 
-class Form : public Expr, public BinaryOperation<Term>
+class Form : public Expr, public BinaryOperation
 {
 public:
     Form(Lex::Location location) :
@@ -730,7 +815,7 @@ public:
     }
 };
 
-class Term : public Expr, public BinaryOperation<Prim>
+class Term : public Expr, public BinaryOperation
 {
 public:
     Term(Lex::Location location) :
@@ -769,6 +854,22 @@ public:
         Not,
         Sub
     };
+
+    static std::string
+    KindToStr(UnaryKind kind)
+    {
+        switch (kind)
+        {
+            case UnaryKind::None:
+                return "None";
+            case UnaryKind::Not:
+                return "Not";
+            case UnaryKind::Sub:
+                return "Sub";
+            default:
+                UnreachableMsg("Unknown kind");
+        }
+    }
 
     Unary(Lex::Location location) :
         Prim(location)

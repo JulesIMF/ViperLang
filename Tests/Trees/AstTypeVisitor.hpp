@@ -38,7 +38,7 @@ class AstTypeVisitor : protected Visitor
 {
 public:
     std::string
-    Visit(AstNode* node)
+    TypeOf(AstNode* node)
     {
         node->Accept(*this);
         return type_;

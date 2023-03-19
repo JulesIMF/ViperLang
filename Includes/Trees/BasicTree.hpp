@@ -30,16 +30,7 @@ Revision History:
 // Definitions
 //
 
-class Visitor
-{
-public:
-    template <typename T>
-    T&
-    As()
-    {
-        return *static_cast<T*>(this);
-    }
-};
+class Visitor;
 
 class BasicTree
 {
@@ -52,5 +43,22 @@ public:
     As()
     {
         return dynamic_cast<T*>(this);
+    }
+};
+
+class Visitor
+{
+public:
+    template <typename T>
+    T&
+    As()
+    {
+        return *static_cast<T*>(this);
+    }
+
+    virtual void
+    Visit(BasicTree* tree)
+    {
+        tree->Accept(*this);
     }
 };

@@ -24,3 +24,4 @@ build
 *cmake_install.cmake
 Makefile
 bin
+*.png

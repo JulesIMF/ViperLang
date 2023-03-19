@@ -56,7 +56,7 @@ AssertMsgFailure(char const* file,
     if (func)
     {
         fmt::print(fmt::emphasis::bold, "Func: ");
-        fmt::print("{}\n", file);
+        fmt::print("{}\n", func);
     }
 
     fmt::print("\nAbort\n");
@@ -93,7 +93,7 @@ UnreachableFailure(char const* file,
     if (func)
     {
         fmt::print(fmt::emphasis::bold, "Func: ");
-        fmt::print("{}\n", file);
+        fmt::print("{}\n", func);
     }
 
     fmt::print("\nAbort\n");
