@@ -889,7 +889,7 @@ public:
     }
 
     UnaryKind kind = UnaryKind::None;
-    Prim*     prim = nullptr;
+    Expr*     prim = nullptr;
 };
 
 class CallExpr : public Prim
