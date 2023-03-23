@@ -22,7 +22,8 @@ Revision History:
 // Includes / usings
 //
 
-#include "Lex/Location.hpp"
+#include <Lex/Lexer.hpp>
+#include <Parse/Parser.hpp>
 #include "Trees/Parse/Ast.hpp"
 #include <Trees/Parse/AstDumpVisitor.hpp>
 
@@ -33,7 +34,7 @@ Revision History:
 using namespace Parse;
 
 int
-main()
+handmade()
 {
     Lex::Location location = {.line = 12, .column = 34};
     auto          file     = new File(location);
@@ -169,4 +170,16 @@ main()
     file->superStmtList->Nodes().push_back(stmtList);
 
     AstDumpVisitor("ast.png").Visit(file);
+
+    return 0;
+}
+
+int main()
+{
+    std::stringstream source(
+        "a*5/b + lol*99/0 - -7<= 0 == !true || false || !!!true || 0");
+    Lex::Lexer l{source};
+    Parser     p(l);
+
+    AstDumpVisitor("ast.png").Visit(p.ParseExpr());
 }
