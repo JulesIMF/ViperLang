@@ -52,21 +52,25 @@ Parser::Parser(Lex::Lexer& lexer) :
 File*
 Parser::ParseFile()
 {
+    return nullptr;
 }
 
 SuperStmtList*
 Parser::ParseSuperStmtList()
 {
+    return nullptr;
 }
 
 SuperStmt*
 Parser::ParseSuperStmt()
 {
+    return nullptr;
 }
 
 Type*
 Parser::ParseType()
 {
+    return nullptr;
 }
 void
 Parser::SendError_(ParsingError error)
