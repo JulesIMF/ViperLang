@@ -213,6 +213,12 @@ protected:
         type_ = "Var";
     }
 
+    virtual void
+    Bool(Bool*)
+    {
+        type_ = "Bool";
+    }
+
 protected:
     std::string type_;
 };

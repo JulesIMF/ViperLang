@@ -126,6 +126,9 @@ public:
 
     virtual void
     Var(class Var* pVar) override;
+    
+    virtual void
+    Bool(class Bool* pVar) override;
 
 protected:
     class Guard

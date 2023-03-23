@@ -30,16 +30,17 @@ Revision History:
 // Includes / usings
 //
 
+#include "Lex/TokenType.hpp"
+#include <Common/Assert.hpp>
 #include <Lex/Location.hpp>
 #include <Lex/Token.hpp>
 #include <Trees/BasicTree.hpp>
+#include <Trees/Parse/AstVisitor.hpp>
 #include <cstddef>
 #include <optional>
 #include <string>
 #include <variant>
 #include <vector>
-#include <Common/Assert.hpp>
-#include <Trees/Parse/AstVisitor.hpp>
 
 //
 // Definitions
@@ -60,7 +61,8 @@ public:
     {
     }
 
-    Lex::Location const& Location()
+    Lex::Location const&
+    Location()
     {
         return location_;
     }
@@ -153,7 +155,8 @@ public:
     {
     }
 
-    virtual Kind SuperStmtKind() = 0;
+    virtual Kind
+    SuperStmtKind() = 0;
 };
 
 class StmtList : public SuperStmt, public AstList<Stmt>
@@ -391,7 +394,7 @@ public:
     }
 
     Lex::IdAttributes varId;
-    Type*             type = nullptr;
+    Type*             type     = nullptr;
     Expr*             initExpr = nullptr;
 };
 
@@ -422,7 +425,7 @@ public:
     operator=(Var* var)
     {
         lValue_ = var;
-        kind_ = Kind::Var;
+        kind_   = Kind::Var;
         return var;
     }
 
@@ -457,7 +460,7 @@ public:
     static std::string
     KindToStr(Kind kind)
     {
-        switch(kind)
+        switch (kind)
         {
             case Kind::None:
                 return "None";
@@ -591,7 +594,7 @@ class ArgDefList : public AstNode, public AstList<VarDecl>
 {
 public:
     using SuperType = AstList<VarDecl>;
-    
+
     ArgDefList(Lex::Location location) :
         AstNode(location)
     {
@@ -632,6 +635,7 @@ public:
         Lss,
         Gtr,
         Leq,
+        Geq,
         Eql,
         Neq,
         Add,
@@ -659,6 +663,8 @@ public:
                 return "Gtr";
             case OpKind::Leq:
                 return "Leq";
+            case OpKind::Geq:
+                return "Geq";
             case OpKind::Eql:
                 return "Eql";
             case OpKind::Neq:
@@ -675,6 +681,46 @@ public:
                 return "Div";
             case OpKind::And:
                 return "And";
+            default:
+                UnreachableMsg("Unknown kind");
+        }
+    }
+
+    static Lex::TokenType
+    KindToTokenType(OpKind kind)
+    {
+        switch (kind)
+        {
+            case OpKind::None:
+                return Lex::TokenType::NONE;
+            case OpKind::Land:
+                return Lex::TokenType::LAND;
+            case OpKind::Lor:
+                return Lex::TokenType::LOR;
+            case OpKind::Lss:
+                return Lex::TokenType::LSS;
+            case OpKind::Gtr:
+                return Lex::TokenType::GTR;
+            case OpKind::Leq:
+                return Lex::TokenType::LEQ;
+            case OpKind::Geq:
+                return Lex::TokenType::GEQ;
+            case OpKind::Eql:
+                return Lex::TokenType::EQL;
+            case OpKind::Neq:
+                return Lex::TokenType::NEQ;
+            case OpKind::Add:
+                return Lex::TokenType::ADD;
+            case OpKind::Sub:
+                return Lex::TokenType::SUB;
+            case OpKind::Or:
+                return Lex::TokenType::OR;
+            case OpKind::Mul:
+                return Lex::TokenType::MUL;
+            case OpKind::Div:
+                return Lex::TokenType::DIV;
+            case OpKind::And:
+                return Lex::TokenType::AND;
             default:
                 UnreachableMsg("Unknown kind");
         }
@@ -709,11 +755,12 @@ public:
     {
         if (TwoOperands())
             return operations[0];
-        
+
         return OpKind::None;
     }
 
-    bool Correct()
+    bool
+    Correct()
     {
         return operands.size() == operations.size() + 1;
     }
@@ -740,7 +787,8 @@ public:
         Float,
         Char,
         String,
-        Var
+        Var,
+        Bool
     };
 
     virtual Kind
@@ -1015,6 +1063,29 @@ public:
     }
 
     Lex::IdAttributes varId;
+};
+
+class Bool : public Imm
+{
+public:
+    Bool(Lex::Location location) :
+        Imm(location)
+    {
+    }
+
+    virtual void
+    Accept(Visitor& visitor)
+    {
+        visitor.As<AstVisitor>().Bool(this);
+    }
+
+    virtual Expr::Kind
+    ExprKind()
+    {
+        return Expr::Kind::Bool;
+    }
+
+    bool value = false;
 };
 
 };  // namespace Parse

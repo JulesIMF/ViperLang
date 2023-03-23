@@ -126,11 +126,11 @@ Cond                -> Expr
 Expr                -> Logc
 Logc                -> Comp {{<LAND> + <LOR>} Comp}*  
 Comp                -> Form {{ <LSS> +
-                              <GTR> +
-                              <LEQ> +
-                              <GEQ> +
-                              <EQL> +
-                              <NEQ>} Form}*
+                               <GTR> +
+                               <LEQ> +
+                               <GEQ> +
+                               <EQL> +
+                               <NEQ>} Form}*
 
 Form                -> Term {{<ADD> + <SUB> + <OR>} Term}*
 Term                -> Prim {{<MUL> + <DIV> + <AND>} Prim}*
@@ -143,7 +143,8 @@ Prim                -> Unary                  |
 Unary               -> {<NOT> + <SUB>} Prim
 
 CallExpr            -> <ID> ArgPassList
-Imm                 -> <INT> | <FLOAT> | <CHAR> | <STRING>
+Imm                 -> <INT> | <FLOAT> | <CHAR> | <STRING> | Bool
 Var                 -> <ID>
+Bool                -> <TRUE> | <FALSE>
 
 ```

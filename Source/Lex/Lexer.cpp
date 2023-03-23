@@ -22,12 +22,12 @@ Revision History:
 // Includes / usings
 //
 
+#include <Common/Assert.hpp>
 #include <Lex/IdentTable.hpp>
 #include <Lex/Lexer.hpp>
 #include <Lex/Scanner.hpp>
 #include <Lex/Token.hpp>
 #include <Lex/TokenType.hpp>
-#include <Common/Assert.hpp>
 #include <cctype>
 #include <cstddef>
 #include <cstdint>
@@ -239,7 +239,8 @@ Lexer::SkipUseless()
 std::optional<Token>
 Lexer::MatchIdentation()
 {
-    if (scanner_.Peek() != '\n' && scanner_.GetLocation().ptr != 0 && !scanner_.Eof())
+    if (scanner_.Peek() != '\n' && scanner_.GetLocation().ptr != 0 &&
+        !scanner_.Eof())
         return std::nullopt;
 
     if (scanner_.GetLocation().ptr != 0)
@@ -607,7 +608,7 @@ Lexer::MatchNumericLiteral()
                                 scanner_.GetLocation());
                     token.attributes =
                         IntAttributes{.base = base, .value = value};
-                    
+
                     PushToken(token);
                     return true;
                 }
@@ -867,7 +868,7 @@ Lexer::MatchWords()
 
     else
     {
-        PushToken(Token(type));
+        PushToken(Token(type, location));
         return true;
     }
 }

@@ -28,6 +28,7 @@ Revision History:
 #include <Common/Assert.hpp>
 #include <Trees/Parse/AstDumpVisitor.hpp>
 #include <fmt/core.h>
+#include <pthread.h>
 #include <string>
 #include <utility>
 
@@ -526,8 +527,18 @@ AstDumpVisitor::Var(class Var* pVar)
     auto guard = MakeGuard_();
 
     file_ << FormatDescription(
-        pVar,
-        fmt::format("Var\\nid: \'{}\'",
-                    pVar->varId.value),
+        pVar, fmt::format("Var\\nid: \'{}\'", pVar->varId.value),
+        "record", "lightgrey");
+}
+
+void
+AstDumpVisitor::Bool(class Bool* pBool)
+{
+    auto guard = MakeGuard_();
+
+    file_ << FormatDescription(
+        pBool,
+        fmt::format("Bool\\nvalue: \'{}\'",
+                    pBool->value ? "true" : "false"),
         "record", "lightgrey");
 }

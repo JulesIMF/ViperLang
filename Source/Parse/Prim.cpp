@@ -8,7 +8,7 @@ Module Name:
 
 Abstract:
 
-    
+
 
 Author / Creation date:
 
@@ -18,18 +18,17 @@ Revision History:
 
 --*/
 
-
 //
 // Includes / usings
 //
 
-#include "Lex/Lexer.hpp"
-#include "Lex/Location.hpp"
-#include "Trees/Parse/Ast.hpp"
 #include <Common/Assert.hpp>
+#include <Lex/Lexer.hpp>
+#include <Lex/Location.hpp>
 #include <Lex/Token.hpp>
 #include <Lex/TokenType.hpp>
 #include <Parse/Parser.hpp>
+#include <Trees/Parse/Ast.hpp>
 #include <cstddef>
 
 using namespace Parse;
@@ -44,19 +43,19 @@ Parser::ParsePrim()
 {
     if (auto node = ParseUnary())
         return node;
-    
+
     if (auto node = ParseCallExpr())
         return node;
-    
+
     if (auto node = ParseImm())
         return node;
-    
+
     if (auto node = ParseVar())
         return node;
-    
+
     if (!lexer_.Matches(TokenType::LPAREN))
         return nullptr;
-    
+
     auto node = ParseExpr();
 
     if (node == nullptr)
@@ -130,7 +129,7 @@ Imm*
 Parser::ParseImm()
 {
     /*
-        Imm -> <INT> | <FLOAT> | <CHAR> | <STRING>
+        Imm -> <INT> | <FLOAT> | <CHAR> | <STRING> | Bool
     */
     if (auto node = ParseInt())
         return node;
@@ -139,6 +138,9 @@ Parser::ParseImm()
         return node;
 
     if (auto node = ParseString())
+        return node;
+
+    if (auto node = ParseBool())
         return node;
 
     return nullptr;
@@ -157,6 +159,7 @@ Parser::ParseInt()
 
     auto node           = new Int(token.location);
     node->intAttributes = token.GetIntAttributes();
+    lexer_.Advance();
     return node;
 }
 
@@ -180,6 +183,7 @@ Parser::ParseChar()
 
     auto node            = new Char(token.location);
     node->charAttributes = token.GetCharAttributes();
+    lexer_.Advance();
     return node;
 }
 
@@ -196,6 +200,7 @@ Parser::ParseString()
 
     auto node              = new String(token.location);
     node->stringAttributes = token.GetStringAttributes();
+    lexer_.Advance();
     return node;
 }
 
@@ -212,5 +217,26 @@ Parser::ParseVar()
 
     auto node   = new Var(token.location);
     node->varId = token.GetIdAttributes();
+    lexer_.Advance();
+    return node;
+}
+
+Bool*
+Parser::ParseBool()
+{
+    /*
+        Bool -> <TRUE> | <FALSE>
+    */
+
+    auto token = lexer_.Peek();
+    if (token.type != TokenType::TRUE &&
+        token.type != TokenType::FALSE)
+    {
+        return nullptr;
+    }
+
+    auto node   = new Bool(token.location);
+    node->value = token.type == TokenType::TRUE;
+    lexer_.Advance();
     return node;
 }
